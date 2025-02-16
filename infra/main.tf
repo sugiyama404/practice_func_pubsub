@@ -14,11 +14,11 @@ provider "google" {
 }
 
 #gcp project services
-module "gcp_project_services" {
-  source     = "./modules/gcp_project_services"
-  project_id = var.project_id
-  region     = var.region
-}
+# module "gcp_project_services" {
+#   source     = "./modules/gcp_project_services"
+#   project_id = var.project_id
+#   region     = var.region
+# }
 
 # IAM
 module "iam" {
