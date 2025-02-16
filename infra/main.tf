@@ -51,7 +51,7 @@ module "functions" {
   storage_bucket_fun_bucket_name     = module.storage.storage_bucket_fun_bucket_name
   storage_bucket_object_srccode_name = module.storage.storage_bucket_object_srccode_name
   service_account_email              = module.iam.service_account_email
-  pubsub_topic_email_topic_id        = module.pubsub.pubsub_topic_email_topic_id
+  pubsub_topic_email_topic_name      = module.pubsub.pubsub_topic_email_topic_name
   project_id                         = var.project_id
   smtp_email                         = var.smtp_email
   smtp_password                      = var.smtp_password
@@ -60,5 +60,6 @@ module "functions" {
 
 # Pub/Sub
 module "pubsub" {
-  source = "./modules/pubsub"
+  source     = "./modules/pubsub"
+  project_id = var.project_id
 }

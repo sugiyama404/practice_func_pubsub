@@ -5,6 +5,10 @@ import base64
 import functions_framework
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import logging
+
+# ログ設定
+logging.basicConfig(level=logging.INFO)
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
@@ -28,12 +32,15 @@ def send_email(cloud_event):
         msg.attach(MIMEText(email_info["content"], "html"))
 
         # SMTPサーバーへ接続し、メール送信
+        logging.info("Connecting to SMTP server...")
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls()
-            server.login(SMTP_EMAIL, SMTP_PASSWORD)
-            server.sendmail(SMTP_EMAIL, RECIPIENT_EMAIL, msg.as_string())
+            server.starttls()  # TLSセキュリティを開始
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)  # Gmailの認証
+            server.sendmail(SMTP_EMAIL, RECIPIENT_EMAIL, msg.as_string())  # メール送信
+        logging.info(f"Email successfully sent to {RECIPIENT_EMAIL}")
 
         return f"Email successfully sent to {RECIPIENT_EMAIL}"
 
     except Exception as e:
+        logging.error(f"Error sending email: {str(e)}")
         return f"Error sending email: {str(e)}"

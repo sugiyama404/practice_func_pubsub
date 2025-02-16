@@ -9,7 +9,7 @@ resource "google_cloudfunctions_function" "fun_from_tf" {
   service_account_email = var.service_account_email
   event_trigger {
     event_type = "google.pubsub.topic.publish"
-    resource   = var.pubsub_topic_email_topic_id
+    resource   = "projects/${var.project_id}/topics/${var.pubsub_topic_email_topic_name}"
   }
   environment_variables = {
     SMTP_EMAIL      = var.smtp_email
