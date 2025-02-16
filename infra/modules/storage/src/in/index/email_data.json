@@ -1,0 +1,4 @@
+{
+    "subject": "Test Email via Gmail SMTP",
+    "content": "<p>Hello, this is a test email sent via Gmail SMTP!</p>"
+}
