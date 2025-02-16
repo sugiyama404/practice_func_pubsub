@@ -1,0 +1,31 @@
+services:
+  send-email-service:
+    image: python:3.11-slim
+    container_name: send-email-container
+    working_dir: /app
+    volumes:
+      - ./infra/modules/storage/src/in/index:/app  # ローカルのファイルをコンテナにマウント
+    environment:
+      - SMTP_EMAIL=kaa
+      - SMTP_PASSWORD=aa
+      - RECIPIENT_EMAIL=aa
+    command: >
+      bash -c "
+        pip install -r requirements.txt &&
+        python /app/main.py
+      "
+    depends_on:
+      - gcloud-pubsub
+    ports:
+      - "8080:8080"
+
+  gcloud-pubsub:
+    image: google/cloud-sdk:alpine
+    container_name: gcloud-pubsub
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/config/gcloud.json
+    volumes:
+      - ./config/gcloud.json:/config/gcloud.json
+    command: >
+      gcloud pubsub topics create email-topic &&
+      gcloud pubsub subscriptions create email-subscription --topic=email-topic
