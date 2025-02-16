@@ -6,7 +6,7 @@ resource "google_project_iam_member" "cloud_func_sa_user" {
     "roles/artifactregistry.writer",
     "roles/artifactregistry.reader",
     "roles/iam.securityAdmin",
-    "roles/pubsub.subscriber"
+    "roles/pubsub.subscriber",
   ])
   role    = each.key
   project = var.project_id
