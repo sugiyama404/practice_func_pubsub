@@ -6,12 +6,12 @@ services:
     volumes:
       - ./infra/modules/storage/src/in/index:/app  # ローカルのファイルをコンテナにマウント
     environment:
-      - SMTP_EMAIL=${SMTP_EMAIL}
-      - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - RECIPIENT_EMAIL=${RECIPIENT_EMAIL}
+      - SMTP_EMAIL=kaa
+      - SMTP_PASSWORD=aa
+      - RECIPIENT_EMAIL=aa
     command: >
       bash -c "
-        pip install requirements.txt &&
+        pip install -r requirements.txt &&
         python /app/main.py
       "
     depends_on:

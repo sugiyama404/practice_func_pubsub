@@ -22,7 +22,9 @@ def send_email(cloud_event):
     try:
         # Pub/Sub メッセージのデコード
         message_data = base64.b64decode(cloud_event.data["message"]["data"]).decode("utf-8")
+        logging.info(f"Decoded message: {message_data}")  # メッセージデータをログに出力
         email_info = json.loads(message_data)
+        logging.info(f"Email info: {email_info}")  # JSONデータをログに出力
 
         # メールの作成
         msg = MIMEMultipart()
@@ -32,13 +34,12 @@ def send_email(cloud_event):
         msg.attach(MIMEText(email_info["content"], "html"))
 
         # SMTPサーバーへ接続し、メール送信
-        logging.info("Connecting to SMTP server...")
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls()  # TLSセキュリティを開始
-            server.login(SMTP_EMAIL, SMTP_PASSWORD)  # Gmailの認証
-            server.sendmail(SMTP_EMAIL, RECIPIENT_EMAIL, msg.as_string())  # メール送信
-        logging.info(f"Email successfully sent to {RECIPIENT_EMAIL}")
+            server.starttls()
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.sendmail(SMTP_EMAIL, RECIPIENT_EMAIL, msg.as_string())
 
+        logging.info(f"Email successfully sent to {RECIPIENT_EMAIL}")
         return f"Email successfully sent to {RECIPIENT_EMAIL}"
 
     except Exception as e:
